@@ -10,6 +10,7 @@ import com.xuecheng.content.service.CourseBaseInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,9 +48,9 @@ public class CourseBaseInfoController {
      * @param addCourseDto
      * @return
      */
-    @PostMapping("/course")
+    @PostMapping
     @ApiOperation("新增课程基本信息")
-    public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto addCourseDto) {
+    public CourseBaseInfoDto createCourseBase(@RequestBody @Validated AddCourseDto addCourseDto) {
         return courseBaseInfoService.createCourseBase(1232141425L, addCourseDto);
     }
 }

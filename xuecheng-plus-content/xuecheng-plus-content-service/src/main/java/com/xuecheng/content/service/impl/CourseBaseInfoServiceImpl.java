@@ -102,8 +102,10 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         CourseMarket courseMarketNew = new CourseMarket();
         BeanUtils.copyProperties(addCourseDto, courseMarketNew);
         courseMarketNew.setId(id);
-        courseMarketMapper.insert(courseMarketNew);
-
+        int insertMarket = courseMarketMapper.insert(courseMarketNew);
+        if (insertMarket <= 0) {
+            throw new RuntimeException("保存课程营销信息失败");
+        }
         //查询课程基本信息及营销信息并返回
         CourseBaseInfoDto courseBaseInfoDto = new CourseBaseInfoDto();
         BeanUtils.copyProperties(courseBaseNew, courseBaseInfoDto);
