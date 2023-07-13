@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
+import com.xuecheng.content.model.dto.AddCourseDto;
+import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
@@ -27,6 +29,13 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     @Autowired
     CourseBaseMapper courseBaseMapper;
 
+    /**
+     * 课程查询接口
+     *
+     * @param pageParams
+     * @param queryCourseParamsDto
+     * @return
+     */
     public PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto) {
         //构建查询条件对象
         LambdaQueryWrapper<CourseBase> queryWrapper = new LambdaQueryWrapper<>();
@@ -48,5 +57,17 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         // 构建结果集
         PageResult<CourseBase> courseBasePageResult = new PageResult<>(courseBaseList, total, pageParams.getPageNo(), pageParams.getPageSize());
         return courseBasePageResult;
+    }
+
+    /**
+     * 新增课程基本信息
+     *
+     * @param companyId
+     * @param addCourseDto
+     * @return
+     */
+    @Override
+    public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto addCourseDto) {
+        return null;
     }
 }
