@@ -5,16 +5,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
+import com.xuecheng.content.mapper.CourseMarketMapper;
 import com.xuecheng.content.model.dto.AddCourseDto;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
+import com.xuecheng.content.model.po.CourseMarket;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -27,7 +32,10 @@ import java.util.List;
 @Slf4j
 public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     @Autowired
-    CourseBaseMapper courseBaseMapper;
+    private CourseBaseMapper courseBaseMapper;
+
+    @Autowired
+    private CourseMarketMapper courseMarketMapper;
 
     /**
      * 课程查询接口
@@ -66,8 +74,40 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
      * @param addCourseDto
      * @return
      */
+    @Transactional
     @Override
     public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto addCourseDto) {
-        return null;
+        //新增对象
+        CourseBase courseBaseNew = new CourseBase();
+        //将填写的课程信息赋值给新增对象
+        BeanUtils.copyProperties(addCourseDto, courseBaseNew);
+        //设置发布状态,未发布
+        courseBaseNew.setStatus("203001");
+        //设置审核状态，未提交
+        courseBaseNew.setAuditStatus("202002");
+        //机构id
+        courseBaseNew.setCompanyId(companyId);
+        //添加时间
+        courseBaseNew.setCreateDate(LocalDateTime.now());
+        //插入数据
+        int insert = courseBaseMapper.insert(courseBaseNew);
+        if (insert <= 0) {
+            throw new RuntimeException("新增课程基本信息失败");
+        }
+
+        //向课程营销表保存课程营销信息
+        //获取插入的id
+        Long id = courseBaseNew.getId();
+        //新增对象
+        CourseMarket courseMarketNew = new CourseMarket();
+        BeanUtils.copyProperties(addCourseDto, courseMarketNew);
+        courseMarketNew.setId(id);
+        courseMarketMapper.insert(courseMarketNew);
+
+        //查询课程基本信息及营销信息并返回
+        CourseBaseInfoDto courseBaseInfoDto = new CourseBaseInfoDto();
+        BeanUtils.copyProperties(courseBaseNew, courseBaseInfoDto);
+        BeanUtils.copyProperties(courseMarketNew, courseBaseInfoDto);
+        return courseBaseInfoDto;
     }
 }
