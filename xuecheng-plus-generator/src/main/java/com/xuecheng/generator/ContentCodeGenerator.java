@@ -16,7 +16,8 @@ import java.util.Arrays;
 public class ContentCodeGenerator {
 
     // TODO 修改服务名以及数据表名
-    private static final String SERVICE_NAME = "xcplus_content";
+    private static final String SERVICE_NAME = "content";
+    private static final String DATESOURCE_NAME = "xcplus_content";
 
     //数据库账号
     private static final String DATA_SOURCE_USER_NAME = "root";
@@ -65,7 +66,7 @@ public class ContentCodeGenerator {
         // 数据库配置
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setDbType(DbType.MYSQL);
-        dsc.setUrl("jdbc:mysql://192.168.101.65:3306/" + SERVICE_NAME
+        dsc.setUrl("jdbc:mysql://192.168.101.65:3306/" + DATESOURCE_NAME
                 + "?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=utf8");
 //		dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");

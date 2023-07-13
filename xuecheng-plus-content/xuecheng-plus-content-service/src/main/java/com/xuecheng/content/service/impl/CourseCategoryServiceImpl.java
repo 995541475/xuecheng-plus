@@ -26,7 +26,6 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
 
     /**
      * 课程分类树形结构查询
-     *
      * @param id
      * @return
      */
@@ -61,6 +60,6 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
                         courseCategoryTreeDto.getChildrenTreeNodes().add(item);
                     }
                 });
-        return courseCategoryTreeDtos;
+        return categoryTreeDtoList;
     }
 }
