@@ -72,7 +72,7 @@ public class CourseBaseInfoController {
      * @return
      */
     @ApiOperation("修改课程基本信息")
-    @PostMapping()
+    @PutMapping()
     public CourseBaseInfoDto modifyCourseBase(@RequestBody @Validated EditCourseDto dto) {
         Long companyId = 1232141425L;
         return courseBaseInfoService.updateCourseBase(companyId, dto);
